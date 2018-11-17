@@ -23,7 +23,8 @@ class CommentForm extends Component {
 	}
 
 	handleSubmit(values) {
-	    alert(JSON.stringify(values));
+	    this.toggleModal();
+	    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
 	}
 
 	toggleModal() {
@@ -36,7 +37,7 @@ class CommentForm extends Component {
 
 	return (
 	    <div>
-		<Button outline onClick={this.toggleModal}><span class="fa fa-pencil fa-lg"></span> Submit Comment </Button>
+		<Button outline onClick={this.toggleModal}><span className="fa fa-pencil fa-lg"></span> Submit Comment </Button>
 		<Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal} >
 		    <ModalHeader toggle={this.toggleModal}>Submit Comment</ModalHeader>
 		    <ModalBody>
@@ -102,22 +103,22 @@ class CommentForm extends Component {
 	}
     }
 
-    function RenderComments({comments}) {
+    function RenderComments({comments,addComment, dishId}) {
 	if(comments != null) {
 	var options = {month:"short",day:"numeric",year:"numeric"}
 	var list = [];
-	for(var i=0; i<4; i++)
+	for(var i=0; i<comments.length; i++)
 	{
-	    list.push(<li className="mb-4">{comments[i].comment}</li>);
-	    list.push(<li className="mb-4"><span>--{comments[i].author}</span>,<span>{new Date(comments[i].date).toLocaleDateString("en-US",options)}</span></li>);
+	    list.push(<li className="mb-2">{comments[i].comment}</li>);
+	    list.push(<li className="mb-2"><span>--{comments[i].author}</span>,<span>{new Date(comments[i].date).toLocaleDateString("en-US",options)}</span></li>);
 	}
 	return (
-	    <div class="container">
+	    <div className="container">
 	    <h3>Comments</h3>
 	    <ul className="list-unstyled">
 		{list}
 	    </ul>
-	    <CommentForm />
+	    <CommentForm dishId={dishId} addComment={addComment}/>
 	    </div>
 	);
 	}
@@ -147,7 +148,8 @@ class CommentForm extends Component {
 		    <RenderDish dish={props.dish} />
 		</div>
 		<div className="col-12 col-md-5 m-1">
-		    <RenderComments comments={props.comments} />
+		    <RenderComments comments={props.comments} addComment={props.addComment}
+			dishId={props.dish.id}/>
 		</div>
 	    </div>
 	    </div>
