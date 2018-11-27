@@ -8,7 +8,7 @@ export const Promotions = (state =  {
     switch(action.type) {
 	case ActionTypes.ADD_PROMOS:
 	    return {...state, isLoading: false, errMess: null, promotions: action.payload};
-	case ActionTypes.DISHES_LOADING:
+	case ActionTypes.PROMOS_LOADING:
 	    return {...state, isLoading: true, errMess: true, promotions: []};
 	case ActionTypes.PROMOS_FAILED:
 	    return {...state, isLoading: false, errMess: action.payload, promotions: []};
